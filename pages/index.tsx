@@ -111,6 +111,35 @@ export default function BooksList() {
     );
   }
 
+  // ログインしていない場合は、スタート画面を表示
+  if (!user) {
+    return (
+      <Layout>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
+            <FaBook className="h-20 w-20 text-blue-500 mb-6" />
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">さあ、始めよう</h1>
+            <p className="text-xl text-gray-600 max-w-2xl mb-8">
+              あなたの読書体験を記録し、管理するための最適なツールです。読んだ本を記録し、レビューを書いて、読書の旅を追跡しましょう。
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/sign-up">
+                <span className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
+                  新規登録
+                </span>
+              </Link>
+              <Link href="/sign-in">
+                <span className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 w-full sm:w-auto">
+                  ログイン
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
