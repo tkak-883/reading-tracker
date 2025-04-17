@@ -6,13 +6,26 @@ import Layout from '../../components/Layout';
 import { FaStar, FaRegStar, FaEdit, FaTrash } from 'react-icons/fa';
 import Link from 'next/link';
 
+// ReadingStatusインターフェースを定義
+interface ReadingStatus {
+    id: string;
+    book_id: string;
+    user_id: string;
+    status: string;
+    rating?: number;
+    review?: string;
+    started_at?: string;
+    completed_at?: string;
+    updated_at: string;
+}
+
 export default function BookDetail() {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useUser();
   const [book, setBook] = useState(null);
-  const [readingStatus, setReadingStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [readingStatus, setReadingStatus] = useState<ReadingStatus | null>(null);
 
   useEffect(() => {
     if (user && id) {
