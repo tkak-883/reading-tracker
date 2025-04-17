@@ -30,6 +30,6 @@ module.exports = {
       },
     },
     plugins: [
-      require('@tailwindcss/line-clamp'),
+      // Line clamp is now included in Tailwind CSS v3.3.0+
     ],
   }
