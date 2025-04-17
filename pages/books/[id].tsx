@@ -23,6 +23,12 @@ export default function BookDetail() {
   const fetchBookDetail = async () => {
     setIsLoading(true);
     try {
+      // userが存在するか確認
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
+
       // ユーザーIDでSupabaseのユーザーを検索
       const { data: userData } = await supabase
         .from('users')
@@ -62,6 +68,9 @@ export default function BookDetail() {
 
   const updateReadingStatus = async (status) => {
     try {
+      // userが存在するか確認
+      if (!user) return;
+
       const { data: userData } = await supabase
         .from('users')
         .select('id')
@@ -70,7 +79,17 @@ export default function BookDetail() {
 
       if (!userData) return;
 
-      const updates = { 
+      // 型定義を追加してTypeScriptエラーを解消
+      interface StatusUpdate {
+        status: string;
+        user_id: any;
+        book_id: string | string[];
+        updated_at: string;
+        started_at?: string;  // オプショナルプロパティ
+        completed_at?: string;  // オプショナルプロパティ
+      }
+
+      const updates: StatusUpdate = { 
         status,
         user_id: userData.id,
         book_id: id,
@@ -110,6 +129,7 @@ export default function BookDetail() {
 
   const updateRating = async (rating) => {
     try {
+      // 読書ステータスが存在するか確認
       if (!readingStatus) return;
 
       const { error } = await supabase
