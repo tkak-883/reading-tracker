@@ -1,7 +1,8 @@
 # 読書トラッカー (Reading Tracker)
 
 読書の記録と管理をするためのWebアプリケーションです。
-アクセス用ドメイン：reading-tracker-phi.vercel.app
+[サイトへ](reading-tracker-phi.vercel.app)
+
 
 ## 主な機能
 
