@@ -20,7 +20,16 @@ module.exports = {
             900: '#1e3a8a',
           },
         },
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+          serif: ['Merriweather', 'serif'],
+        },
+        boxShadow: {
+          'soft': '0 2px 10px rgba(0, 0, 0, 0.05)',
+        },
       },
     },
-    plugins: [],
+    plugins: [
+      require('@tailwindcss/line-clamp'),
+    ],
   }
