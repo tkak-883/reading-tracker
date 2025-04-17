@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
-import { supabase } from '../../lib/supabase';
-import Layout from '../../components/Layout';
+import { supabase } from '../lib/supabase';
+import Layout from '../components/Layout';
 import Link from 'next/link';
 import { FaBook, FaFilter, FaPlus, FaSearch } from 'react-icons/fa';
 
@@ -14,6 +14,7 @@ interface Book {
   genre?: string;
   cover_url?: string;
   user_id: string;
+  reading_status?: ReadingStatus[];
 }
 
 interface ReadingStatus {

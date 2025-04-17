@@ -7,8 +7,8 @@ import { FaSearch } from 'react-icons/fa';
 
 export default function BooksList() {
   const { user } = useUser();
-  const [books, setBooks] = useState([]);
-  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [books, setBooks] = useState<any[]>([]);
+  const [filteredBooks, setFilteredBooks] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -27,6 +27,8 @@ export default function BooksList() {
     setIsLoading(true);
     try {
       // ユーザーIDでSupabaseのユーザーを検索
+      if (!user) return;
+      
       const { data: userData } = await supabase
         .from('users')
         .select('id')

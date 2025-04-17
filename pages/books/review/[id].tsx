@@ -6,12 +6,35 @@ import { supabase } from '../../../lib/supabase';
 import Layout from '../../../components/Layout';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
+// インターフェースを定義
+interface Book {
+  id: string;
+  title: string;
+  author: string;
+  published_year?: string | number;
+  genre?: string;
+  cover_url?: string;
+  user_id: string;
+}
+
+interface ReadingStatus {
+  id: string;
+  book_id: string;
+  user_id: string;
+  status: string;
+  rating?: number;
+  review?: string;
+  started_at?: string;
+  completed_at?: string;
+  updated_at: string;
+}
+
 export default function BookReview() {
   const router = useRouter();
   const { id } = router.query;
   const { user } = useUser();
-  const [book, setBook] = useState(null);
-  const [readingStatus, setReadingStatus] = useState(null);
+  const [book, setBook] = useState<Book | null>(null);
+  const [readingStatus, setReadingStatus] = useState<ReadingStatus | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [rating, setRating] = useState(0);
@@ -32,6 +55,8 @@ export default function BookReview() {
     setIsLoading(true);
     try {
       // ユーザーIDでSupabaseのユーザーを検索
+      if (!user) return;
+      
       const { data: userData } = await supabase
         .from('users')
         .select('id')
@@ -86,7 +111,7 @@ export default function BookReview() {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: { review: string }) => {
     if (!readingStatus) return;
     
     setIsSubmitting(true);
