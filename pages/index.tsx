@@ -39,6 +39,8 @@ export default function BooksList() {
   useEffect(() => {
     if (user) {
       fetchBooks();
+    } else {
+      setIsLoading(false);
     }
   }, [user]);
 
