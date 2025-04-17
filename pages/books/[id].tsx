@@ -37,11 +37,18 @@ export default function BookDetail() {
         .single();
 
       if (userData) {
+        // book_idの処理：undefinedやstring[]の可能性に対応
+        const bookId = typeof id === 'string' ? id : Array.isArray(id) ? id[0] : null;
+        if (!bookId) {
+          setIsLoading(false);
+          return;
+        }
+
         // 書籍の詳細情報を取得
         const { data: bookData, error: bookError } = await supabase
           .from('books')
           .select('*')
-          .eq('id', id)
+          .eq('id', bookId)
           .eq('user_id', userData.id)
           .single();
 
@@ -52,7 +59,7 @@ export default function BookDetail() {
         const { data: statusData, error: statusError } = await supabase
           .from('reading_status')
           .select('*')
-          .eq('book_id', id)
+          .eq('book_id', bookId)
           .eq('user_id', userData.id)
           .single();
 
@@ -70,6 +77,9 @@ export default function BookDetail() {
     try {
       // userが存在するか確認
       if (!user) return;
+      
+      // idが存在するか確認
+      if (!id) return;
 
       const { data: userData } = await supabase
         .from('users')
@@ -79,20 +89,25 @@ export default function BookDetail() {
 
       if (!userData) return;
 
-      // 型定義を追加してTypeScriptエラーを解消
+      // TypeScriptが理解できる型を明示的に指定
+      const bookId = typeof id === 'string' ? id : Array.isArray(id) ? id[0] : null;
+      
+      // bookIdがnullの場合は処理を中止
+      if (!bookId) return;
+
       interface StatusUpdate {
         status: string;
         user_id: any;
-        book_id: string | string[];
+        book_id: string;
         updated_at: string;
-        started_at?: string;  // オプショナルプロパティ
-        completed_at?: string;  // オプショナルプロパティ
+        started_at?: string;
+        completed_at?: string;
       }
 
       const updates: StatusUpdate = { 
         status,
         user_id: userData.id,
-        book_id: id,
+        book_id: bookId, // 安全になった変数を使用
         updated_at: new Date().toISOString()
       };
 
@@ -153,6 +168,9 @@ export default function BookDetail() {
     if (!confirm('本当にこの書籍を削除しますか？')) return;
 
     try {
+      // book が存在するか確認
+      if (!book) return;
+      
       // 関連する読書ステータスを削除
       if (readingStatus) {
         await supabase
